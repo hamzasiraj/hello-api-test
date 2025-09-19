@@ -1,15 +1,15 @@
 export default async function handler(req, res) {
   try {
-    const response = await fetch("https://www.goldapi.io/api/XAU/USD", {
-      headers: {
-        "x-access-token": "goldapi-3zcg8sma2ah6mp-io",
-        "Content-Type": "application/json"
-      }
-    });
+    const response = await fetch("https://api.gold-api.com/get_price?symbol=XAU");
+    
+    if (!response.ok) {
+      return res.status(response.status).json({ error: "Failed to fetch gold price" });
+    }
 
-    const text = await response.text(); // show raw text
-    res.status(200).send(text);
+    const data = await response.json();
+    res.status(200).json(data);
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Server error while fetching gold price" });
   }
 }
