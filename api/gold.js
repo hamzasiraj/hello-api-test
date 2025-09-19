@@ -1,13 +1,15 @@
 export default async function handler(req, res) {
   try {
-    // Free API from CoinGecko for gold price in USD
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=gold&vs_currencies=usd"
-    );
-    const data = await response.json();
+    const response = await fetch("https://api.gold-api.com/get_price?symbol=XAU");
+    
+    if (!response.ok) {
+      return res.status(response.status).json({ error: "Failed to fetch gold price" });
+    }
 
-    res.status(200).json(data); // Example: { "gold": { "usd": 1930.55 } }
+    const data = await response.json();
+    res.status(200).json(data);
+
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch gold prrice" });
+    res.status(500).json({ error: "Server error while fetching gold price" });
   }
 }
