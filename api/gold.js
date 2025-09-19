@@ -7,13 +7,9 @@ export default async function handler(req, res) {
       }
     });
 
-    if (!response.ok) {
-      return res.status(response.status).json({ error: "Failed to fetch gold price" });
-    }
-
-    const data = await response.json();
-    res.status(200).json(data);
+    const text = await response.text(); // show raw text
+    res.status(200).send(text);
   } catch (error) {
-    res.status(500).json({ error: "Server error while fetching gold price" });
+    res.status(500).json({ error: error.message });
   }
 }
